@@ -1,0 +1,36 @@
+cmake_minimum_required (VERSION 3.5)
+
+project(dependency-setup NONE)
+
+include(ExternalProject)
+
+ExternalProject_Add(googletest
+   GIT_REPOSITORY https://github.com/google/googletest.git
+   CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${CMAKE_BINARY_DIR}/vendor
+   -DCMAKE_PREFIX_PATH=${CMAKE_BINARY_DIR}/vendor
+   -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+   -DBUILD_SHARED_LIBS=ON
+   UPDATE_COMMAND "")
+
+ExternalProject_Add(benchmark
+   GIT_REPOSITORY https://github.com/google/benchmark.git
+   CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${CMAKE_BINARY_DIR}/vendor
+   -DCMAKE_PREFIX_PATH=${CMAKE_BINARY_DIR}/vendor
+   -DCMAKE_BUILD_TYPE=${CMAKE_BUILD_TYPE}
+   -DBENCHMARK_ENABLE_TESTING=OFF
+   -DBUILD_SHARED_LIBS=ON
+   DEPENDS googletest
+   UPDATE_COMMAND "")
+
+# set(GOOGLETEST_LIB ${CMAKE_SOURCE_DIR}/vendor/googletest/lib/${CMAKE_STATIC_LIBRARY_PREFIX}gtest${CMAKE_STATIC_LIBRARY_SUFFIX})
+# set(GOOGLETEST_INCLUDE ${CMAKE_SOURCE_DIR}/vendor/googletest/include)
+# add_library(gtest STATIC IMPORTED)
+# set_target_properties(gtest
+#    PROPERTIES IMPORTED_LOCATION ${GOOGLETEST_LIB})
+
+
+# set(BENCHMARK_LIB ${CMAKE_SOURCE_DIR}/vendor/benchmark/lib/${CMAKE_STATIC_LIBRARY_PREFIX}benchmark${CMAKE_STATIC_LIBRARY_SUFFIX})
+# set(BENCHMARK_INCLUDE ${CMAKE_SOURCE_DIR}/vendor/benchmark/include)
+# add_library(benchmark STATIC IMPORTED)
+# set_target_properties(benchmark
+#    PROPERTIES IMPORTED_LOCATION ${BENCHMARK_LIB})
