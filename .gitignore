@@ -101,3 +101,4 @@ _deps
 build/
 release/
 debug/
+build-*/

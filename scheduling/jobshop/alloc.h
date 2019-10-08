@@ -3,9 +3,9 @@
 
 #include <vector>
 
-using AllocFunc = int (*)(std::vector<int> , int);
+using AllocFunc = int (*)(std::vector<int>::const_iterator, std::vector<int>::const_iterator, int);
 
-int backtrackShortest(std::vector<int> tasks, int numWorkers);
-int bruteForceShortest(std::vector<int> tasks, int numWorkers);
+int backtrackShortest(std::vector<int>::const_iterator begin, std::vector<int>::const_iterator end, int numWorkers);
+int bruteForceShortest(std::vector<int>::const_iterator begin, std::vector<int>::const_iterator end, int numWorkers);
 
 #endif // ALLOC_H
