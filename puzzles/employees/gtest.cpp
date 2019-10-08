@@ -52,3 +52,11 @@ TEST(EmployeeTest, ManyEmployees) {
    EXPECT_EQ(110, employee1+employee2+employee3);
    EXPECT_EQ(employee1 + employee2 + employee3, minCost(3, 4, 7, {0,2,3,0,1,0,2,1,3,0}));
 }
+
+TEST(EmployeeTest, Zero) {
+   EXPECT_EQ(0, minCost(3, 4, 7, {}));
+}
+
+TEST(EmployeeTest, ZeroSalary) {
+   EXPECT_EQ(2, minCost(1, 0, 1, {1, 0, 0, 1}));
+}

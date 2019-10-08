@@ -1,10 +1,16 @@
 #include <vector>
 #include <deque>
 #include <utility>
+#include <algorithm>
 
 using namespace std;
 
 int minCost(int hire, int salary, int severance, vector<int> minEmployees) {
+   if (!salary) {
+      // EMPLOY ALL THE PEOPLE
+      return *max_element(minEmployees.begin(), minEmployees.end()) * (hire + severance);
+   }
+   
    // crux: is it cheaper to fire and rehire an employee vs keep them employed?
    int months = (hire + severance) / salary;
    // months or less, we keep the employee
