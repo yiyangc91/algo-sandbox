@@ -17,7 +17,7 @@ The restrictions are:
 - Assume all numbers are several magnitudes smaller than INT\_MAX or INT\_MIN.
 
 TreeSolver
------
+----------
 
 The treesolver code is a bit of a mess, spitting out memory everywhere.
 
@@ -44,6 +44,28 @@ This means the code is a humongous mess trying to figure out what alternatives
 there are. I mean, "theoretically" I can just reinterpret a pointer to the
 variant as a `Node*` but I'm not sure if that's ... legal in C++. Works on
 clang though?
+
+Is this thing correct? NO IDEA. Haven't tested it yet. Generated formulas for 4
+seems correct.
+
+DFSSolver
+---------
+
+Yeah so this is something I want to write, but actually I DO NOT WANT TO WRITE.
+
+Instead of merging two elements and attaching it to the nodes above,
+this looks at the tree top down, and opts to "split" the elements
+
+Honestly, sounds complex as hell. The main gist is we have a function that,
+given some numbers, is able to generate all tree combinations and apply a func.
+The function would then be something like this:
+
+1. Generate all possible sublists split by size [1..N]
+2. Pass each sublist recursively to itself. The callback would then take the
+   node of the generated tree, then recursively call itself on the RHS list.
+3. The second callback now has both sides of the generated tree, and it can
+   create a node that represents the final tree, and it then calls it's own
+   callback.
 
 Usage
 ------

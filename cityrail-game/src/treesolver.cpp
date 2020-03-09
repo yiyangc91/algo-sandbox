@@ -1,4 +1,5 @@
 #include <functional>
+#include <iostream>
 
 #include "solver.h"
 
@@ -87,7 +88,7 @@ void TreeSolver::generateOps(
 }
 
 void TreeSolver::permute(unsigned int length,
-         std::function<void(const Node*)> f) {
+         function<void(const Node*)> f) {
    // Qn: Have I encountered this particular combo
    //     of nodes before?
    // TODO
@@ -98,40 +99,42 @@ void TreeSolver::permute(unsigned int length,
 
    if (length == 1) {
       if (visit([this](const auto& alternative) {
-         return alternative.getNumerator() == target &&
-            alternative.getDenominator() == 1;
+               return true;
+         /* return alternative.getNumerator() == target && */
+         /*    alternative.getDenominator() == 1; */
       }, preallocated[0][0])) {
          f(getAsNodePtr(preallocated[0][0]));
       }
       return;
    }
 
+   auto& lower = preallocated[length-2];
+   auto& upper = preallocated[length-1];
+
    for (unsigned int i = 0; i < length-1; ++i) {
       for (unsigned int j = i+1; j < length; ++j) {
-         generateOps(preallocated[length-1][i],
-               preallocated[length-1][j],
-               preallocated[length-2],
-               length-1,
+         generateOps(upper[i], upper[j], lower, length-1,
                // HACK because cbf
-               [i,j,length,this]() {
+               // Oh god I'm so sorry
+               [i,j,length,&lower,&upper]() {
                   for (unsigned int k = i+1; k < length; ++k) {
                      if (k == j) continue;
 
-                     preallocated[length-2].emplace_back(preallocated[length-1][k]);
+                     lower.emplace_back(upper[k]);
                   }
-               },
-               f);
+               }, f);
+
+         lower.erase(lower.begin()+i, lower.end());
       }
 
-      preallocated[length-2].erase(preallocated[length-2].begin()+i, preallocated[length-2].end());
-      preallocated[length-2].emplace_back(preallocated[length-1][i]);
+      lower.emplace_back(upper[i]);
    }
 
-   preallocated[length-2].clear();
+   lower.clear();
 }
 
 TreeSolver::TreeSolver(int target, vector<int> nums)
-   : target(target), numbers(std::move(nums)) {
+   : target(target), numbers(move(nums)) {
    preallocated.reserve(numbers.size());
 
    for (decltype(numbers.size()) i = 0; i < numbers.size(); ++i) {
