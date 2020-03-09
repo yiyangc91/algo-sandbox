@@ -99,9 +99,8 @@ void TreeSolver::permute(unsigned int length,
 
    if (length == 1) {
       if (visit([this](const auto& alternative) {
-               return true;
-         /* return alternative.getNumerator() == target && */
-         /*    alternative.getDenominator() == 1; */
+         return alternative.getNumerator() == target &&
+            alternative.getDenominator() == 1;
       }, preallocated[0][0])) {
          f(getAsNodePtr(preallocated[0][0]));
       }
