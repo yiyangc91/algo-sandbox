@@ -11,7 +11,8 @@ class Solver {
 public:
    virtual ~Solver() = default;
 
-   virtual std::vector<std::unique_ptr<Node>> solve() = 0;
+   virtual void solve(
+         std::function<void(const Node*)>) = 0;
 };
 
 // This lets me test different implementations
@@ -25,18 +26,20 @@ class TreeSolver : public Solver {
    std::vector<
       std::vector<std::variant<OpRaw, Node>>
    > preallocated;
-   std::vector<std::unique_ptr<Node>> ans;
 
-   void permute(unsigned int length);
+   void permute(unsigned int length,
+         std::function<void(const Node*)>);
    void generateOps(
          std::variant<OpRaw, Node>& left,
          std::variant<OpRaw, Node>& right,
          std::vector<std::variant<OpRaw, Node>>& out,
          unsigned int length,
-         std::function<void(void)> fillRemainder);
+         std::function<void(void)> fillRemainder,
+         std::function<void(const Node*)> f);
 
 public:
    TreeSolver(int target, std::vector<int> nums);
-   virtual std::vector<std::unique_ptr<Node>> solve();
+   virtual void solve(
+         std::function<void(const Node*)>);
 };
 

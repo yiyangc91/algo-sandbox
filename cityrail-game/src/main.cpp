@@ -5,10 +5,9 @@
 using namespace std;
 
 int main() {
-   TreeSolver ts {24, {1, 2, 3, 4}};
-   auto results = ts.solve();
-
-   for (const auto& res : results) {
+   TreeSolver ts {24, {4, 6, 2, 1}};
+   ts.solve([](const Node* res) {
       cout << res->string() << endl;
-   }
+   });
+
 }
